@@ -1,8 +1,10 @@
+import {REACT_APP_API_CHIMP} from "@env";
+
 const mailchimp = require("@mailchimp/mailchimp_marketing");
 const md5 = require("md5")
 
 mailchimp.setConfig({
-  apiKey: "9b18f9a41e6c939d76f5b3abd496927f-us14",
+  apiKey: REACT_APP_API_CHIMP,
   server: "us14",
 });
 
