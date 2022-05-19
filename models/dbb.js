@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 const dotenv = require("dotenv");
 dotenv.config();
 const REACT_APP_DB = process.env.REACT_APP_DB;
+console.log("mongo", REACT_APP_DB)
 
 var options = {
     connectTimeoutMS: 5000,
