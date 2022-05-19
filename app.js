@@ -1,4 +1,5 @@
-
+const dotenv = require("dotenv");
+dotenv.config();
 require('./models/dbb')
 var createError = require('http-errors');
 var express = require('express');
