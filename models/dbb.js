@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 
 const REACT_APP_DB = process.env.REACT_APP_DB;
-console.log(REACT_APP_DB)
 
 var options = {
     connectTimeoutMS: 5000,

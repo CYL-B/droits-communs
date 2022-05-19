@@ -13,7 +13,11 @@ const PORT= process.env.PORT || "3000"
 var app = express();
 
 // view engine setup
-app.set("port", PORT)
+app.set("port", PORT);
+app.listen(PORT, function(err){
+  if (err) console.log("Error in server setup")
+  console.log("Server listening on Port", PORT);
+})
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
