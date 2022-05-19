@@ -1,10 +1,7 @@
 var mongoose = require('mongoose');
 
-const REACT_APP_USER = process.env.REACT_APP_USER;
-const REACT_APP_PASSWORD = process.env.REACT_APP_PASSWORD;
-
-console.log(REACT_APP_USER)
-console.log(REACT_APP_PASSWORD)
+const REACT_APP_USER = REACT_APP_USER;
+const REACT_APP_PASSWORD = REACT_APP_PASSWORD;
 
 var options = {
     connectTimeoutMS: 5000,
