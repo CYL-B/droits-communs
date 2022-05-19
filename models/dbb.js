@@ -1,8 +1,5 @@
 var mongoose = require('mongoose');
 
-const REACT_APP_USER = REACT_APP_USER;
-const REACT_APP_PASSWORD = REACT_APP_PASSWORD;
-
 var options = {
     connectTimeoutMS: 5000,
     useNewUrlParser: true,
