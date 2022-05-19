@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config();
+dotenv.config({ path: require('find-config')('.env') });
 require('./models/dbb')
 var createError = require('http-errors');
 var express = require('express');
