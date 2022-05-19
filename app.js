@@ -1,5 +1,5 @@
 const dotenv = require("dotenv").config();
-var findConfig = require('find-config');
+
 
 require('./models/dbb')
 var createError = require('http-errors');

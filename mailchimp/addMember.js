@@ -1,5 +1,6 @@
 const mailchimp = require("@mailchimp/mailchimp_marketing");
 const md5 = require("md5")
+var API_CHIMP = process.env.API_CHIMP
 
 mailchimp.setConfig({
   apiKey: API_CHIMP,
