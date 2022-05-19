@@ -1,4 +1,6 @@
-import {REACT_APP_API_CHIMP} from "@env";
+const dotenv = require("dotenv");
+dotenv.config();
+const REACT_APP_API_CHIMP = process.env.REACT_APP_API_CHIMP;
 
 const mailchimp = require("@mailchimp/mailchimp_marketing");
 const md5 = require("md5")
