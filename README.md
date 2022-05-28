@@ -14,7 +14,8 @@ This website features :
 
 To build "Droits communs", I used : 
 * MERN stack technologies (Mongo, Express, React, NodeJs);
-* Material UI, a styling library based on styled-components.
+* Material UI, a styling library based on styled-components;
+* React-redux.
 
 Droits communs was published and deployed on Heroku.
 
