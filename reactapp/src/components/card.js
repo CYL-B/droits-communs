@@ -18,8 +18,7 @@ import { useState } from 'react';
 
 
 export default function ArticleCard(props) {
-const[like, setLike] = useState("secondary")
-const[count, setCount] = useState(0)
+
 
     let colorShadow
     if(props.cardShadow === "pink"){
@@ -28,24 +27,13 @@ const[count, setCount] = useState(0)
         colorShadow = "-20px -10px #FFC726"
     }
 
-    const addToFavorite = () =>{
-
-      if(like == "secondary")
-      {setLike("warning")
-      setCount(count+1)} else{
-        setLike("secondary")
-        setCount(count-1)
-      }
-
-     
-
-    }
+    
 
 
     return (
       <Box>
         <Card {...props} sx={{width: 400, boxShadow : colorShadow, maxHeight:400}}>
-       <Link to={`/Article/${props.id}`}><CardHeader
+       <Link style={{textDecoration:"none"}} to={`/Article/${props.id}`}><CardHeader
             title={props.title}
             sx={{fontWeight: 700}}
             subheader={props.date}
@@ -61,12 +49,12 @@ const[count, setCount] = useState(0)
           
           <CardActions disableSpacing sx={{display:"flex",  justifyContent: 'space-around'}}>
           <Avatar alt="Remy Sharp" src="/avatar.jpeg" />
-            <IconButton color={like} onClick={()=>addToFavorite()} aria-label="add to favorites">
-              <Badge badgeContent={count} color="primary" anchorOrigin={{
+            
+              <Badge badgeContent={props.count} color="primary" anchorOrigin={{
     vertical: 'bottom',
     horizontal: 'right',
-  }}><FavoriteIcon /></Badge>
-            </IconButton>
+  }}><FavoriteIcon color={props.color} /></Badge>
+           
             <IconButton color="secondary" aria-label="share">
               <ShareIcon />
             </IconButton>

@@ -34,6 +34,8 @@ function Main(props) {
   const [mostPopular, setMostPopular] = useState([])
   const [category, setCategory] = useState("")
   const [errorToShow, setErrorToShow] = useState(null);
+  const [add, setAdd]= useState(props.countToDisplay)
+  
   // const [toCheck, setToCheck] = useState(false)
 
   let navigate = useNavigate()
@@ -93,8 +95,16 @@ function Main(props) {
   var allArticles = list.map((article, i) => {
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
     var date = new Date(article.date_published).toLocaleDateString("fr-FR", options);
+    var compteur = article.favorite + add
+
+    var like = "warning"
+
+    
+
+    
+
     return (
-      <ArticleCard key={i} title={article.title} date={date} img={article.image} read={article.readingTime} cardShadow={i % 2 ? "pink" : "yellow"} id={article._id}></ArticleCard>
+      <ArticleCard key={i} color={like}  title={article.title} date={date} img={article.image} read={article.readingTime} cardShadow={i % 2 ? "pink" : "yellow"} count={compteur} id={article._id}></ArticleCard>
     )
   })
 
@@ -130,13 +140,13 @@ function Main(props) {
           <Box>
             <Box component="form"
               sx={{
-                '& > :not(style)': { m: 1, width: '25ch' },
+                '& > :not(style)': { m: 1, width: '25ch', marginBottom:"40px" },
                 margin: "auto"
               }}
               noValidate
               autoComplete="off">
               <form>
-                <TextField id="standard-basic" label="Recherche un article" variant="standard"
+                <TextField id="standard-basic" label="Rechercher un article" variant="standard"
                   onChange={(e) => setRecherche(e.target.value)}
                   value={recherche}
                   InputLabel={{ disableAnimation: "true" }}
@@ -195,4 +205,10 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Main);
+function mapStateToProps(state){
+  console.log("state", state.compteur)
+  return { countToDisplay: state.compteur }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

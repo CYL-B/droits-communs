@@ -221,21 +221,18 @@ error = "aucun résultat"
 })
 
 
-//route pour ajouter un commentaire ou modifier le rating
+//route pour ajouter un commentaire
 
 router.put('/add-comment', async function (req, res, next) {
 
   var comment = req.body.comment;
-  var ratingCount = req.body.ratingCount;
-  var avgRating = req.body.avgRating;
   var articleId = req.body.id;
   var pickDate = new Date().toLocaleDateString('fr-FR')
   var name = req.body.name
   var result
   var article = await ArticleModel.findById(articleId)
   var comments
-  var newRatingCount
-  var newRating
+ 
 
   if(comment){
 
@@ -248,17 +245,32 @@ router.put('/add-comment', async function (req, res, next) {
 result = true
   }
 
-  if (rating){
-    var changeArticle = await ArticleModel.updateOne({id:articleId},
-      {ratingCount : ratingCount,
-      rating : avgRating })
-var newRatingCount = article.ratingCount;
-var newRating = article.rating
-  }
-
 
 
   res.json({ result, comments, newRating, newRatingCount })
 })
+
+//route pour modifier le nombre de favoris
+
+router.put('/add-favorite', async function (req, res, next) {
+
+  var compteur = req.body.count;
+  var articleId = req.body.id;
+  
+  var article = await ArticleModel.findById(articleId)
+
+
+    var changeArticle = await ArticleModel.updateOne({id:articleId},
+      {favorite : compteur,
+      })
+var newFavorite = changeArticle.favorite;
+
+
+console.log("favorite", newFavorite)
+
+
+  res.json({ newFavorite })
+})
+
 
 module.exports = router;

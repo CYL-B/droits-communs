@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import { createStore, combineReducers } from 'redux'
 import articleList from './reducers/articles'
 import searchList from './reducers/research'
+import compteur from './reducers/like'
 
 
 //Navigation
@@ -31,7 +32,7 @@ import "@fontsource/ibm-plex-mono";
 import {useInitFbSDK} from './social media/facebook'
 
 
-const store = createStore(combineReducers({ articleList, searchList }))
+const store = createStore(combineReducers({ articleList, compteur, searchList }))
 
 
 

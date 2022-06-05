@@ -5,9 +5,10 @@ import ModeSwitch from "../components/switch";
 import MainDivider from "../components/divider";
 import { ArtCard, MiniArticleCard } from "../components/articleCard";
 
+/*REDUX*/
+import { connect } from 'react-redux';
 
 import Typography from '@mui/material/Typography';
-import StarIcon from '@mui/icons-material/Star';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -17,9 +18,8 @@ import HeadsetIcon from '@mui/icons-material/Headset';
 import TextField from '@mui/material/TextField';
 import StyledButton from "../components/button";
 
-//Rating
-import { styled } from '@mui/material/styles';
-import Rating from '@mui/material/Rating';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
 
 
 import { useState, useEffect } from 'react';
@@ -36,10 +36,9 @@ function Article(props) {
     const [comment, setComment] = useState("");
     const [name, setName] = useState("")
     const [mainArticle, setMainArticle] = useState({})
-    const [value, setValue] = useState(0);
-    const [count, setCount] = useState(0)
-    const [averageRating, setAverageRating] = useState(0)
-    const [isRated, setIsRated] = useState(false)
+//états liés au like
+    const[like, setLike] = useState("secondary")
+const[count, setCount] = useState(0)
 
 //récupère la valeur de l'input commentaire
     const handleChange = (event) => {
@@ -48,18 +47,7 @@ function Article(props) {
         // changeArticle();
     };
 
-//modifie les informations de l'article en BDD (comment + ratings)
-    const changeArticle = async () => {
-        const dataArticle = await fetch('/add-comment', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `comment=${comment}&count=${count}&id=${id}&name=${name}`
-        })
-        const retour = await dataArticle.json()
-        
-    
-      }
-//permet de trouver l'article à afficher
+    //permet de trouver l'article à afficher
     useEffect(() => {
 
         const findArticle = async () => {
@@ -67,30 +55,41 @@ function Article(props) {
             const body = await dataArticle.json()
 
             setMainArticle(body.articleFound)
+            setCount(body.articleFound.favorite)
 
         }
         findArticle()
     }, [])
 
-
-    const StyledRating = styled(Rating)({
-        '& .MuiRating-iconFilled': {
-            color: '#ff6d75',
-        },
-        '& .MuiRating-iconHover': {
-            color: '#ff3d47',
-        },
-    });
-
-
-//fonction qui s'active au clic sur les étoiles (rating)
-    var chooseRating = (event, newValue) => {
-        setValue(newValue);
-        setCount(count + 1)
-        setIsRated(true)
-    }
-
+//modifie les informations de l'article en BDD (comment)
+    const changeArticle = async () => {
+        const dataArticle = await fetch('/add-comment', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `comment=${comment}&id=${id}&name=${name}&count=${count}`
+        })
+        const retour = await dataArticle.json()
+        
     
+      }
+
+//modifier les infos de l'article en BDD (likes)
+useEffect(()=> {
+    const changeFavorites = async () => {
+    console.log("check", count)
+    const dataArticle = await fetch('/add-favorite', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `id=${id}&count=${count}`
+    })
+    const retour = await dataArticle.json()
+    
+
+  }
+  changeFavorites()
+},[count])
+
+
     /* appel de la fonction FB permettant de partager un post*/
     const FB = window.FB
 
@@ -102,7 +101,25 @@ function Article(props) {
         
           }, function(response){});
     }
+//mécanisme du like qui s'enclenche au click sur le coeur
+    const addToFavorite = () =>{
 
+        if(like == "secondary")
+        {setLike("warning")
+        setCount(count+1)
+    props.Like();
+    
+    } else{
+          setLike("secondary")
+          setCount(count-1)
+          props.Dislike()
+          
+        }
+  
+       
+  
+      }
+  
     return (
        <Box>
             <NavBar></NavBar>
@@ -135,10 +152,15 @@ function Article(props) {
                             <HeadsetIcon sx={{ color: "#FFC726" }} />
                             <Typography variant="body1">
 
-                                Note ({mainArticle.ratingCount + count})
+                                Like
                             </Typography>
+                           
+              <Badge badgeContent={count} color='primary' anchorOrigin={{
+    vertical: 'bottom',
+    horizontal: 'right',
+  }}><FavoriteIcon color="warning"/></Badge>
                             <Box sx={{ display: "flex" }}>
-                                <Rating name="customized-5" defaultValue={mainArticle.rating} max={5} readOnly />
+                               
                             </Box>
                         </Paper>
                     </Box>
@@ -206,13 +228,14 @@ function Article(props) {
                             <IconButton>
                                 <ShareIcon></ShareIcon>
                             </IconButton>
-                            <Typography>Cet article a t-il été utile ? </Typography>
+                            <Typography>Avez-vous aimé cet article ? </Typography>
+                            <IconButton color={like} onClick={()=>addToFavorite()} aria-label="add to favorites">
+              <Badge color="primary" anchorOrigin={{
+    vertical: 'bottom',
+    horizontal: 'right',
+  }}><FavoriteIcon /></Badge></IconButton>
 
-                            <Rating name="customized-5" defaultValue={0} max={5}
-                                onChange={(event, newValue) => {
-                                    chooseRating(event, newValue)
-
-                                }} />
+                            
                         </Box>
 
                     </Box>
@@ -271,4 +294,21 @@ function Article(props) {
     )
 }
 
-export default Article;
+function mapStateToProps(state){
+    return {countToDisplay: state.compteur}
+  }
+  function mapDispatchToProps(dispatch){
+    
+  return {
+    Like: function () {
+
+      dispatch({ type: "add" })
+    },
+    Dislike: function () {
+      dispatch({ type: "remove"})
+    }
+  }
+  }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Article);

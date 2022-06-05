@@ -27,7 +27,7 @@ function About(props) {
 
 
                     </Box>
-                    <MiniArticleCard corner="round" image="https://cdn.pixabay.com/photo/2018/01/29/17/01/woman-3116587_1280.jpg"></MiniArticleCard>
+                    
                     </Box>
             </Box>
             <MainDivider orientation="horizontal"></MainDivider>
