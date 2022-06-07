@@ -99,12 +99,15 @@ function Main(props) {
 
     var like = "warning"
 
+    var comments = article.comments;
+    var commentsNb = comments.length
+
     
 
     
 
     return (
-      <ArticleCard key={i} color={like}  title={article.title} date={date} img={article.image} read={article.readingTime} cardShadow={i % 2 ? "pink" : "yellow"} count={compteur} id={article._id}></ArticleCard>
+      <ArticleCard key={i} color={like}  title={article.title} date={date} img={article.image} read={article.readingTime} cardShadow={i % 2 ? "pink" : "yellow"} count={compteur} id={article._id} nb={commentsNb}></ArticleCard>
     )
   })
 

@@ -247,7 +247,7 @@ result = true
 
 
 
-  res.json({ result, comments, newRating, newRatingCount })
+  res.json({ result, comments })
 })
 
 //route pour modifier le nombre de favoris

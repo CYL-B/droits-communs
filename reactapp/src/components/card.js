@@ -55,13 +55,14 @@ export default function ArticleCard(props) {
     horizontal: 'right',
   }}><FavoriteIcon color={props.color} /></Badge>
            
-            <IconButton color="secondary" aria-label="share">
-              <ShareIcon />
-            </IconButton>
+            
             <Typography>{props.read}</Typography>
-            <IconButton color="secondary" aria-label="comment">
+            <Badge badgeContent={props.nb} color="primary" anchorOrigin={{
+    vertical: 'bottom',
+    horizontal: 'right',
+  }}>
               <ChatBubbleIcon />
-            </IconButton>
+            </Badge>
           </CardActions>
           
         </Card>

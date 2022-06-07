@@ -31,21 +31,21 @@ import { useParams } from "react-router-dom"
 
 function Article(props) {
 
- 
+ //id récupéré des params
     const { id } = useParams();
+//informations pour chaque commentaire
     const [comment, setComment] = useState("");
     const [name, setName] = useState("")
+    const[comments, setComments] = useState([])
+
+//informations de l'article
     const [mainArticle, setMainArticle] = useState({})
 //états liés au like
-    const[like, setLike] = useState("secondary")
-const[count, setCount] = useState(0)
+    const[like, setLike] = useState("secondary");
+    const[count, setCount] = useState(0)
 
 //récupère la valeur de l'input commentaire
-    const handleChange = (event) => {
-        setComment(event.target.value);
-        setName(event.target.value)
-        // changeArticle();
-    };
+    
 
     //permet de trouver l'article à afficher
     useEffect(() => {
@@ -56,22 +56,30 @@ const[count, setCount] = useState(0)
 
             setMainArticle(body.articleFound)
             setCount(body.articleFound.favorite)
+            setComments(body.articleFound.comments)
 
         }
         findArticle()
     }, [])
 
 //modifie les informations de l'article en BDD (comment)
-    const changeArticle = async () => {
+   
+       const changeArticle = async () => {
         const dataArticle = await fetch('/add-comment', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `comment=${comment}&id=${id}&name=${name}&count=${count}`
+          body: `comment=${comment}&id=${id}&name=${name}`
         })
         const retour = await dataArticle.json()
         
     
       }
+
+
+    const handleChange = () => {
+       
+       changeArticle()
+    };
 
 //modifier les infos de l'article en BDD (likes)
 useEffect(()=> {
@@ -119,6 +127,16 @@ useEffect(()=> {
        
   
       }
+
+      var commentsToDisplay = comments.map((info, i)=>{
+          return(
+<Paper key={i} sx={{ margin: "20px", backgroundColor: "white", width: "75%", height: "auto", marginY: "50px" }}>
+                    <Typography variant="body1" sx={{ padding: "10px", fontWeight: 800 }}>{info.name}</Typography>
+                    <Typography variant="body1" sx={{ padding: "10px" }}>{info.content}</Typography>
+                    <Typography variant="body1" sx={{ padding: "10px" }}>{info.dateComment}</Typography>
+                </Paper>
+          )
+      })
   
     return (
        <Box>
@@ -199,7 +217,7 @@ useEffect(()=> {
           variant="filled"
           value={name}
           sx={{ background: "white", borderRadius: "15px" }}
-          onChange={handleChange}
+          onChange={(e) => setName(e.target.value)}
         />
                             <TextField
                                 id="standard-multiline-static"
@@ -210,9 +228,9 @@ useEffect(()=> {
                                 variant="filled"
                                 sx={{ background: "white", borderRadius: "15px" }}
                                 value={comment}
-                                onChange={handleChange}
+                                onChange={(e) => setComment(e.target.value)}
                             />
-                            <StyledButton color="yellow" size="md" title="Poster"></StyledButton>
+                            <StyledButton handleClick={handleChange} color="yellow" size="md" title="Poster"></StyledButton>
                         </Box>
                         <Box>
                             <Typography>Partagez : </Typography>
@@ -283,10 +301,7 @@ useEffect(()=> {
 
                     </Paper>
                 </Paper>
-                <Paper sx={{ margin: "20px", backgroundColor: "white", width: "75%", height: "auto", marginY: "50px" }}>
-                    <Typography variant="body1" sx={{ padding: "10px", fontWeight: 800 }}>Hey</Typography>
-                    <Typography variant="body1" sx={{ padding: "10px" }}>Hey</Typography>
-                </Paper>
+                {commentsToDisplay}
             </Box>
             <Footer></Footer>
             <ModeSwitch setTheme={props.setTheme}></ModeSwitch>
